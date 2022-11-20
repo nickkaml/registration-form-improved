@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    testImplementation (
+            "com.codeborne:selenide:6.9.0",
+            "org.junit.jupiter:junit-jupiter:5.9.0")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+help {
+    doFirst {
+        println ""
+        println "************************************************************************ "
+        println "***                                                                  *** "
+        println "*** Welcome to https://github.com/nickkaml/hw3_form                  *** "
+        println "***                                                                  *** "
+        println "*** ./gradlew help                                                   *** "
+        println "***                                                                  *** "
+        println "************************************************************************ "
+        println ""
+    }
+}
