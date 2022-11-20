@@ -1,3 +1,5 @@
+package tests;
+
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterAll;
@@ -22,14 +24,16 @@ public class RegistrationTest {
     @Test
     void studentForm() {
 
-        String firstName = "Иван";
-        String lastName = "Иванов";
+        String firstName = "Ivan";
+        String lastName = "Ivanov";
         String email = "ivan@mail.ru";
         String phoneNumber = "1234567890";
-        String address = "улица Ленина, 35, кв. 1";
+        String address = "prospekt Mira, 1, flat 1";
 
 
         open("/automation-practice-form");
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+
         executeJavaScript("$('#fixedban').remove()");
         executeJavaScript("$('footer').remove()");
 
@@ -79,8 +83,8 @@ public class RegistrationTest {
         );
     }
 
-    @AfterAll
+    /*@AfterAll
     static void afterAll() {
         Configuration.holdBrowserOpen = false;
-    }
+    }*/
 }
