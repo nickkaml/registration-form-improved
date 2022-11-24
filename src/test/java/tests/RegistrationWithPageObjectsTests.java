@@ -20,24 +20,27 @@ public class RegistrationWithPageObjectsTests {
     @BeforeAll
     static void beforeAll() {
         Configuration.baseUrl = "https://demoqa.com";
+        Configuration.holdBrowserOpen = true;
     }
 
     @Test
     void successfulRegistrationTest() {
 
         Faker faker = new Faker();
-        Faker fakerWorld = new Faker(new Locale("YOUR_LOCALE"));
 
         String firstName = faker.name().firstName(),
                 lastName = faker.name().lastName(),
                 email = faker.internet().emailAddress(),
                 gender = "Male",
-                phoneNumber = "0987654321",
+                phoneNumber = faker.phoneNumber().subscriberNumber(10),
                 yearOfBirth = "2000",
                 monthOfBirth = "January",
-                address = fakerWorld.address().fullAddress(),
-                city = "Rajasthan",
-                state = "Jaiselmer";
+                subjects = "Math",
+                hobbies = "Sports",
+                picture = "img/picture.jpeg",
+                address = faker.address().fullAddress(),
+                state = "Rajasthan",
+                city = "Jaiselmer";
 
 
         registrationPage.openPage()
@@ -45,30 +48,18 @@ public class RegistrationWithPageObjectsTests {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setGender(gender)
-                .setPhone(phoneNumber);
+                .setPhone(phoneNumber)
+                .setDateOfBirth(yearOfBirth, monthOfBirth)
+                .setSubjects(subjects)
+                .setHobbies(hobbies)
+                .uploadPicture(picture)
+                .setAddress(address)
+                .setState(state)
+                .setCity(city)
+                .submit()
+                .checkTheForm();
 
 
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__year-select").selectOption(yearOfBirth);
-        $(".react-datepicker__month-select").selectOption(monthOfBirth);
-        $(".react-datepicker__day--001:not(.react-datepicker__day--outside-month)").click();
-
-        $("#subjectsInput").setValue("English").pressEnter();
-
-        $("#hobbiesWrapper").$(byText("Sports")).click();
-
-        $("#uploadPicture").uploadFromClasspath("img/picture.jpeg");
-
-        $("#currentAddress").setValue(address);
-        $("#state").click();
-        $("#state").$(byText(city)).click();
-        $("#city").click();
-        $("#city").$(byText(state)).click();
-        $("#submit").click();
-
-
-        $(".modal-dialog").should(appear);
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
         $(".table-responsive").shouldHave(
                 text(firstName),
                 text(lastName),
@@ -76,11 +67,11 @@ public class RegistrationWithPageObjectsTests {
                 text(gender),
                 text(phoneNumber),
                 text("01 " + monthOfBirth + "," + yearOfBirth),
-                text("English"),
-                text("Sports"),
-                text("picture.jpeg"),
+                text(subjects),
+                text(hobbies),
+                //text(picture),
                 text(address),
-                text(city + " " + state)
+                text(state + " " + city)
         );
     }
 }
