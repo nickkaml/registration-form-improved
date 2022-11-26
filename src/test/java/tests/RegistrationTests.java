@@ -63,7 +63,7 @@ public class RegistrationTests {
 
         $("#hobbiesWrapper").$(byText("Sports")).click();
 
-        $("#uploadPicture").uploadFromClasspath("img/picture.jpeg");
+        $("#uploadPicture").uploadFromClasspath("picture.jpeg");
 
         $("#currentAddress").setValue(address);
         $("#state").click();

@@ -2,6 +2,7 @@ package tests;
 
 import org.junit.jupiter.api.Test;
 
+
 public class RegistrationWithPageObjectsTests extends TestBase {
 
     @Test
@@ -17,7 +18,7 @@ public class RegistrationWithPageObjectsTests extends TestBase {
                 dayOfBirth = "01",
                 subjects = "Math",
                 hobbies = "Sports",
-                picture = "img/picture.jpeg",
+                picture = "picture.jpeg",
                 address = "prospekt Mira 1, kv. 1",
                 state = "Rajasthan",
                 city = "Jaiselmer";
@@ -45,7 +46,7 @@ public class RegistrationWithPageObjectsTests extends TestBase {
                 .verifyResult("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
                 .verifyResult("Subjects", subjects)
                 .verifyResult("Hobbies", hobbies)
-                .verifyResult("Picture", "picture.jpeg")
+                .verifyResult("Picture", picture)
                 .verifyResult("Address", address)
                 .verifyResult("State and City", state + " " + city);
 
