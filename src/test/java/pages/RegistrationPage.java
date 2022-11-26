@@ -2,6 +2,8 @@ package pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import pages.components.CalendarComponent;
+import pages.components.RegistrationResultsModal;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
@@ -10,6 +12,9 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class RegistrationPage {
+    CalendarComponent calendarComponent = new CalendarComponent();
+    RegistrationResultsModal registrationResultsModal = new RegistrationResultsModal();
+
     private final String TITLE_TEXT = "Student Registration Form";
     private SelenideElement
             firstNameInmut = $("#firstName"),
@@ -17,10 +22,7 @@ public class RegistrationPage {
             emailInput = $("#userEmail"),
             genderClick = $("#genterWrapper"),
             phoneInput = $("#userNumber"),
-            calendarClick = $("#dateOfBirthInput"),
-            yearSet = $(".react-datepicker__year-select"),
-            monthSet = $(".react-datepicker__month-select"),
-            daySet = $(".react-datepicker__day--001:not(.react-datepicker__day--outside-month)"),
+            dateOfBirthSet = $("#dateOfBirthInput"),
             subjectsSet = $("#subjectsInput"),
             hobbiesSet = $("#hobbiesWrapper"),
             pictureUpload = $("#uploadPicture"),
@@ -75,11 +77,9 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setDateOfBirth(String value1, String value2) {
-        calendarClick.click();
-        yearSet.selectOption(value1);
-        monthSet.selectOption(value2);
-        daySet.click();
+    public RegistrationPage setDateOfBirth(String day, String month, String year) {
+        dateOfBirthSet.click();
+        calendarComponent.setDate(day, month, year);
 
         return this;
     }
@@ -128,14 +128,20 @@ public class RegistrationPage {
         return this;
     }
 
-    private final String TITLE_TEXT2 = "Thanks for submitting the form";
-
-    public RegistrationPage checkTheForm() {
-        $(".modal-dialog").should(appear);
-        $("#example-modal-sizes-title-lg").shouldHave(text(TITLE_TEXT2));
+    public RegistrationPage verifyResultsModalAppears() {
+        registrationResultsModal.verifyModalAppears();
 
         return this;
     }
+
+    public RegistrationPage verifyResult(String key, String value) {
+        registrationResultsModal.verifyResult(key, value);
+
+        return this;
+    }
+
+
+
 
 
 

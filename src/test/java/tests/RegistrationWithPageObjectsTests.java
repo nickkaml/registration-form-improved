@@ -1,44 +1,24 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
-import com.github.javafaker.Faker;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import pages.RegistrationPage;
 
-import java.util.Locale;
-
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
-
-public class RegistrationWithPageObjectsTests {
-    RegistrationPage registrationPage = new RegistrationPage();
-
-
-    @BeforeAll
-    static void beforeAll() {
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.holdBrowserOpen = true;
-    }
+public class RegistrationWithPageObjectsTests extends TestBase {
 
     @Test
     void successfulRegistrationTest() {
 
-        Faker faker = new Faker();
-
-        String firstName = faker.name().firstName(),
-                lastName = faker.name().lastName(),
-                email = faker.internet().emailAddress(),
+        String firstName = "Ivan",
+                lastName = "Ivanov",
+                email = "ivanov@mail.ru",
                 gender = "Male",
-                phoneNumber = faker.phoneNumber().subscriberNumber(10),
-                yearOfBirth = "2000",
+                phoneNumber = "0987654321",
+                yearOfBirth = "1999",
                 monthOfBirth = "January",
+                dayOfBirth = "01",
                 subjects = "Math",
                 hobbies = "Sports",
                 picture = "img/picture.jpeg",
-                address = faker.address().fullAddress(),
+                address = "prospekt Mira 1, kv. 1",
                 state = "Rajasthan",
                 city = "Jaiselmer";
 
@@ -49,7 +29,7 @@ public class RegistrationWithPageObjectsTests {
                 .setEmail(email)
                 .setGender(gender)
                 .setPhone(phoneNumber)
-                .setDateOfBirth(yearOfBirth, monthOfBirth)
+                .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
                 .setSubjects(subjects)
                 .setHobbies(hobbies)
                 .uploadPicture(picture)
@@ -57,21 +37,17 @@ public class RegistrationWithPageObjectsTests {
                 .setState(state)
                 .setCity(city)
                 .submit()
-                .checkTheForm();
+                .verifyResultsModalAppears()
+                .verifyResult("Student Name", firstName + " " + lastName)
+                .verifyResult("Student Email", email)
+                .verifyResult("Gender", gender)
+                .verifyResult("Mobile", phoneNumber)
+                .verifyResult("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
+                .verifyResult("Subjects", subjects)
+                .verifyResult("Hobbies", hobbies)
+                .verifyResult("Picture", "picture.jpeg")
+                .verifyResult("Address", address)
+                .verifyResult("State and City", state + " " + city);
 
-
-        $(".table-responsive").shouldHave(
-                text(firstName),
-                text(lastName),
-                text(email),
-                text(gender),
-                text(phoneNumber),
-                text("01 " + monthOfBirth + "," + yearOfBirth),
-                text(subjects),
-                text(hobbies),
-                //text(picture),
-                text(address),
-                text(state + " " + city)
-        );
     }
 }
